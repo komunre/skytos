@@ -1,6 +1,11 @@
 boot_src = boot.asm
 boot_obj = boot.obj
 
+kernel_src = kernel/screen.c
+kernel_obj = $(patsubst kernel/%.c, %.o, $(kernel_src))
+
+FLAGS = -O2 -m32 -fno-pie -nostdlib -fno-builtin -nostartfiles -nodefaultlibs -ffreestanding -Ikernel
+
 all: run
 
 $(boot_obj): $(boot_src)
@@ -8,9 +13,15 @@ $(boot_obj): $(boot_src)
 
 kernel.o: kernel/kernel.c
 	gcc -m32 -fno-pie -nostdlib -fno-builtin -nostartfiles -nodefaultlibs -ffreestanding -c $< -o $@
+	
+$(kernel_obj): $(kernel_src)
+	gcc $(FLAGS) -c $< -o $@
 
-link: $(boot_obj) kernel.o
-	ld -melf_i386 -T linker.ld -o skytos.bin $^
+#otal.o: $(kernel_src)
+#	gcc -m32 -fno-pie -nostdlib -fno-builtin -nostartfiles -nodefaultlibs -ffreestanding -o total.o $^
+
+link: $(boot_obj) kernel.o $(kernel_obj)
+	ld -zmuldefs -melf_i386 -T linker.ld -o skytos.bin $^
 
 iso: link
 	mkdir -p iso/boot/grub
