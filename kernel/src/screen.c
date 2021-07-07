@@ -13,6 +13,10 @@ void print_char_xy(char ch, int x, int y) {
 }
 
 void print_char(char ch) {
+    if (ch == '\n') {
+        screenY++;
+        return;
+    }
     print_char_xy(ch, screenX, screenY);
     screenX++;
     if (screenX > screenWidth) {
@@ -25,7 +29,10 @@ void print_char(char ch) {
 }
 
 void print_str(char* str) {
-    for (int i = 0; i < sizeof(str) / sizeof(str[0]); i++) {
+    for (int i = 0; i < 100; i++) {
+        if (str[i] == 0x0 || str[i] == 0) {
+            break;
+        }
         print_char(str[i]);
     }
 }
