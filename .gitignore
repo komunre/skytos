@@ -5,3 +5,4 @@
 *.obj
 test.img
 .test.img.swp
+kernel.sym

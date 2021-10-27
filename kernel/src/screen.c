@@ -36,3 +36,13 @@ void print_str(char* str) {
         print_char(str[i]);
     }
 }
+
+void clear_screen() {
+    screenX = 0;
+    screenY = 0;
+    for (int i = 0; i < screenWidth * screenHeight; i++) {
+        print_char(' ');
+    }
+    screenX = 0;
+    screenY = 0;
+}

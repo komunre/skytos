@@ -15,4 +15,6 @@ void print_char(char ch);
 
 void print_str(char* str);
 
+void clear_screen();
+
 #endif

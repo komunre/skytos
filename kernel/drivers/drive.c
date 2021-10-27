@@ -2,6 +2,7 @@
 #include "../src/port/port.h"
 #include "../src/tools.h"
 #include "../src/screen.h"
+#include "../src/string.h"
 
 char* baseIO = 0x1F0;
 
@@ -10,10 +11,11 @@ char* control = 0x3F7;
 void init_drive() {
     print_str("Iniializing drive!");
     write_short_to_port(baseIO[6], (0b00001101));
-    write_byte_to_port(baseIO[4], 0);
-    write_byte_to_port(baseIO[5], 0);
+    //write_byte_to_port(baseIO[4], 0);
+    //write_byte_to_port(baseIO[5], 0);
     write_byte_to_port(baseIO[7], 0xEC);
     //write_byte_to_port(baseIO[7], 0x08);
+    print_str("Reading status...");
     wait_status();
     if (read_byte_from_port(baseIO[7]) == 0) {
         print_str("NO DRIVE!");
@@ -30,11 +32,21 @@ void init_drive() {
 
 int wait_status() {
     char status = read_byte_from_port(baseIO[7]);
-    while (status & 0b00000001 == 1) {
+    long cycles = 0;
+    const long max_cycles = 100000;
+    while (status & 0b00000001 == 1 && cycles < max_cycles) {
         status = read_byte_from_port(baseIO[7]);
         screenX = 0;
         screenY = 1;
         print_str(intts(status));
+        print_str(intts(cycles));
+        cycles++;
+    }
+    if (cycles >= max_cycles) {
+        screenX = 0;
+        screenY = 0;
+        print_str("restart");
+        write_byte_to_port(baseIO[7], 0x08);
     }
     if ((status & 0b00000010) == 1) {
         print_str("Success!");
@@ -42,7 +54,7 @@ int wait_status() {
     if (status & 0b10000000 == 1 || (status & 0b00000010) == 0) {
         print_str("Error?");
         char error = read_byte_from_port(baseIO[1]);
-        print_char(error + 0x30);
+        print_char(intts(error));
         if (error & 0b10000000 == 1) {
             print_str("No address mark");
         }

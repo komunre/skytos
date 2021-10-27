@@ -7,7 +7,7 @@ boot_obj = boot.obj
 kernel_src = $(shell find kernel/ -name "*.c")
 kernel_obj = $(patsubst %.c, %.o, $(kernel_src))
 
-FLAGS = -fno-pie -nostdlib -fno-builtin -nostartfiles -nodefaultlibs -ffreestanding
+FLAGS = -g -fno-pie -nostdlib -fno-builtin -nostartfiles -nodefaultlibs -ffreestanding
 
 all: run
 
@@ -34,10 +34,19 @@ iso: link
 drive:
 	qemu-img create -f raw test.img 1024
 
+debug: skytos.bin
+	objcopy --only-keep-debug skytos.bin kernel.sym
+
 run: iso drive
 	qemu-system-i386 -m 2048 -drive format=raw,file=skytos.iso \
 		-drive format=raw,file=test.img,if=none,id=testdr \
-		-device ich9-ahci,id=ahci \
+		-device ahci,id=ahci \
+		-device ide-hd,drive=testdr,bus=ahci.0
+
+debug-iso: iso drive debug
+	qemu-system-i386 -s -S -m 2048 -drive format=raw,file=skytos.iso \
+		-drive format=raw,file=test.img,if=none,id=testdr \
+		-device ahci,id=ahci \
 		-device ide-hd,drive=testdr,bus=ahci.0
 
 clean:
