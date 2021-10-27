@@ -31,11 +31,14 @@ iso: link
 	cp skytos.bin iso/boot/skytos.bin
 	grub-mkrescue -o skytos.iso iso/
 	
-drive: 
-	qemu-img create -f raw test.img 512M
+drive:
+	qemu-img create -f raw test.img 1024
 
 run: iso drive
-	qemu-system-i386 -m 2048 skytos.iso -drive format=raw,file=test.img
+	qemu-system-i386 -m 2048 -drive format=raw,file=skytos.iso \
+		-drive format=raw,file=test.img,if=none,id=testdr \
+		-device ich9-ahci,id=ahci \
+		-device ide-hd,drive=testdr,bus=ahci.0
 
 clean:
 	rm $(kernel_obj)

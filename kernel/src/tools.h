@@ -3,4 +3,9 @@
 
 void sleep(int ticks);
 
+char* intts(int num);
+
+
+char* hexts(char hex);
+
 #endif

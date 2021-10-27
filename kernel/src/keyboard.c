@@ -6,6 +6,7 @@
 char chars[255] = "-=0\tqwertyuiop[]00asdfghjkl;'`0\\zxcvbnm,./0*";
 char* command = "";
 int command_counter = 0;
+char sector = 0;
 
 void process_key() {
     char ch = get_resp(0x60);
@@ -13,14 +14,23 @@ void process_key() {
         if (ch == 0x01) {
             print_char('w');
             for (int i = 0; i < 2; i++) {
-                write_drive_data(0x0C);
+                write_drive_data(0x0C, sector);
             }
+            sleep(100000);
         }
 
         if (ch == 0x1C) {
-            short* data = read_drive_data();
+            screenX = 0;
+            screenY = 0;
+            print_str("num: ");
+            print_char(sector);
+            short* data = read_drive_data(sector);
             for (int i = 0; i < 256; i++) {
-                print_char(data[i]);
+                print_str(data[i]);
+            }
+            sector++;
+            if (sector == 255) {
+                sector = 0;
             }
         }
 
