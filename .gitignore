@@ -3,3 +3,5 @@
 *.bin
 *.iso
 *.obj
+test.img
+.test.img.swp

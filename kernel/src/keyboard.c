@@ -1,6 +1,7 @@
 #include "keyboard.h"
 #include "ps2.h"
 #include "screen.h"
+#include "../drivers/drive.h"
 
 char chars[255] = "-=0\tqwertyuiop[]00asdfghjkl;'`0\\zxcvbnm,./0*";
 char* command = "";
@@ -10,7 +11,17 @@ void process_key() {
     char ch = get_resp(0x60);
     if (ch < 0x81) {
         if (ch == 0x01) {
-            // Escape
+            print_char('w');
+            for (int i = 0; i < 2; i++) {
+                write_drive_data(0x0C);
+            }
+        }
+
+        if (ch == 0x1C) {
+            short* data = read_drive_data();
+            for (int i = 0; i < 256; i++) {
+                print_char(data[i]);
+            }
         }
 
         if (ch > 0x02 && ch < 0x0B) {

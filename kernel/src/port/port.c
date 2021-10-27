@@ -10,3 +10,13 @@ char read_byte_from_port(short port) {
     asm volatile ("inb %1, %0" : "=a" (ret) : "dN" (port));
     return ret;
 }
+
+void write_short_to_port(short port, short value) {
+    asm volatile ("outb %1, %0": : "dN" (port), "a" (value));
+}
+
+short read_short_from_port(short port) {
+    short ret;
+    asm volatile ("inb %1, %0" : "=a" (ret) : "dN" (port));
+    return ret;
+}

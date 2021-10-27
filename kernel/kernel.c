@@ -6,9 +6,8 @@
 #include "src/tools.h"
 
 void kmain(void) {
-    print_str("initializing floppies...");
-    sleep(30000000);
-    init_floppy();
+    init_drive();
+    print_str("Drive init done(?)");
     char* data = read_sector(0);
     print_str(data);
 

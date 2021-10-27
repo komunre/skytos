@@ -15,7 +15,7 @@ $(boot_obj): $(boot_src)
 	nasm -felf32 $< -o $@
 
 
-$(kernel_obj): $(kernel_src)
+%.o: %.c $(kernel_src)
 	$(CC) $(FLAGS) -c $< -o $@
 
 #otal.o: $(kernel_src)
@@ -31,8 +31,11 @@ iso: link
 	cp skytos.bin iso/boot/skytos.bin
 	grub-mkrescue -o skytos.iso iso/
 	
-run: iso
-	qemu-system-i386 -m 2048 skytos.iso
+drive: 
+	qemu-img create -f raw test.img 512M
+
+run: iso drive
+	qemu-system-i386 -m 2048 skytos.iso -drive format=raw,file=test.img
 
 clean:
 	rm $(kernel_obj)
