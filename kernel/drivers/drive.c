@@ -34,7 +34,7 @@ int wait_status() {
     char status = read_byte_from_port(baseIO[7]);
     long cycles = 0;
     const long max_cycles = 100000;
-    while (status & 0b00000001 == 1 && cycles < max_cycles) {
+    while (status & 0b00000001 == 1 && status & 0b00000010 == 1 && cycles < max_cycles) {
         status = read_byte_from_port(baseIO[7]);
         screenX = 0;
         screenY = 1;
