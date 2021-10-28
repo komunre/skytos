@@ -5,7 +5,7 @@ char* video_mem = (char*)0xb8000;
 int screenX = 0;
 int screenY = 0;
 
-int screenWidth = 80;
+int screenWidth = 132;
 int screenHeight = 25;
 
 void print_char_xy(char ch, int x, int y) {

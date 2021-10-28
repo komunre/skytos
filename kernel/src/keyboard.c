@@ -2,6 +2,7 @@
 #include "ps2.h"
 #include "screen.h"
 #include "../drivers/drive.h"
+#include "../drivers/ide.h"
 #include "tools.h"
 
 char chars[255] = "-=0\tqwertyuiop[]00asdfghjkl;'`0\\zxcvbnm,./0*";
@@ -26,7 +27,7 @@ void process_key() {
             screenY = 0;
             print_str("num: ");
             print_str(intts(sector));
-            short* data = read_drive_data(sector);
+            short* data = read_ide();
             for (int i = 0; i < 256; i++) {
                 print_str(data[i]);
             }

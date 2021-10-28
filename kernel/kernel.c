@@ -4,6 +4,7 @@
 #include "src/keyboard.h"
 #include "drivers/floppy.h"
 #include "src/tools.h"
+#include "drivers/ide.h"
 
 void kmain(void) {
     init_drive();
@@ -16,6 +17,9 @@ void kmain(void) {
 
     print_str("\nAHCI: ");
     init_ahci();
+
+    //print_str("\nIDE: ");
+    //init_ide();
 
     print_str(format_str(" Skytos loaded\n"));
     print_str("A number! ");
