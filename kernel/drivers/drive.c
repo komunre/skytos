@@ -8,9 +8,11 @@ char* baseIO = 0x1F0;
 
 char* control = 0x3F7;
 
+char drive = 0b00001101;
+
 void init_drive() {
     print_str("Iniializing drive!");
-    write_short_to_port(baseIO[6], (0b00001101));
+    write_short_to_port(baseIO[6], drive);
     //write_byte_to_port(baseIO[4], 0);
     //write_byte_to_port(baseIO[5], 0);
     write_byte_to_port(baseIO[7], 0xEC);
@@ -21,12 +23,16 @@ void init_drive() {
         print_str("NO DRIVE!");
     }
 
+    check_active_drive();
+}
+
+void check_active_drive() {
     char drive = read_byte_from_port(control[1]);
     if (drive & 0x01 == 0) {
-        print_str("drive number 1");
+        print_str("drive number 1 ");
     }
     if (drive & 0x00 == 0) {
-        print_str("drive number 0");
+        print_str("drive number 0 ");
     }
 }
 
@@ -46,7 +52,7 @@ int wait_status() {
         screenX = 0;
         screenY = 0;
         print_str("restart");
-        write_byte_to_port(baseIO[7], 0x08);
+        write_byte_to_port(control, 0b00100000);
     }
     if ((status & 0b00000010) == 1) {
         print_str("Success!");
@@ -85,7 +91,13 @@ int wait_status() {
     }
 }
 
+void seek(char sectors) {
+    write_byte_to_port(baseIO[0], sectors);
+    write_byte_to_port(baseIO[7], 0x70);
+}
+
 short* read_drive_data(char sector) {
+    write_byte_to_port(baseIO[6], drive);
     write_byte_to_port(baseIO[4], sector);
     write_byte_to_port(baseIO[5], sector);
     write_byte_to_port(baseIO[2], 1);
@@ -95,6 +107,7 @@ short* read_drive_data(char sector) {
     for (int i = 0; i < 256; i++) {
         data[i] = read_short_from_port(baseIO[0]);
     }
+    check_active_drive();
     return data;
 }
 

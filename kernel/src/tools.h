@@ -14,4 +14,6 @@ char* allocate();
 
 char* reverse_size(char* str, int size);
 
+int chftoint(char b1, char b2, char b3, char b4);
+
 #endif

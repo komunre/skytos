@@ -6,6 +6,6 @@ extern char* baseIO;
 void init();
 
 short* read_data();
-void write_date(short* data);
+void write_data(short* data);
 
 #endif

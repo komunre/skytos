@@ -37,13 +37,13 @@ drive:
 debug: skytos.bin
 	objcopy --only-keep-debug skytos.bin kernel.sym
 
-run: iso drive
+run: iso
 	qemu-system-i386 -m 2048 -drive format=raw,file=skytos.iso \
 		-drive format=raw,file=test.img,if=none,id=testdr \
 		-device ahci,id=ahci \
 		-device ide-hd,drive=testdr,bus=ahci.0
 
-debug-iso: iso drive debug
+debug-iso: iso debug
 	qemu-system-i386 -s -S -m 2048 -drive format=raw,file=skytos.iso \
 		-drive format=raw,file=test.img,if=none,id=testdr \
 		-device ahci,id=ahci \

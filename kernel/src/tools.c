@@ -6,7 +6,7 @@ char mem[4096];
 long memIndex = 0;
 
 char* allocate_index(long index) {
-    return (char*)mem[index];
+    return &(mem[index]);
 }
 
 char* allocate(long size) {
@@ -23,8 +23,13 @@ void sleep(int ticks) {
 
 char* intts(int num) {
     if (num == 0) return "0";
-    char* str = "";
+    char str[10];
     int index = 0;
+    if (num < 0) {
+        str[0] = '-';
+        index++;
+        num *= -1;
+    }
     while(num > 0) {
         int digit = num % 10;
         num /= 10;
@@ -54,4 +59,8 @@ char* reverse(char* str) {
         len++;
     }
     return reverse_size(str, len);
+}
+
+int chftoint(char b1, char b2, char b3, char b4) {
+    return b1 << 24 | b2 << 16 | b3 << 8 | b4;
 }
