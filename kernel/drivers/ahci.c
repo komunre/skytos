@@ -61,17 +61,20 @@ char* bar5addr;
 
 char implemented_ports[32];
 
+char ahci_bus = -1;
+char* ahci_device = -1;
+
 int* ahci_control;
 
 int* get_port_addr(int offset) {
     return (char*)(0x100 + (offset * 0x80));
 }
 
+int clb[1024];
+int fb[256];
+
 void init_ahci() {
     // Brute force device
-
-    char ahci_bus = -1;
-    char* ahci_device = -1;
 
     for (unsigned char i = 0; i < 255; i++) {
         for (char j = 0; j < 32; j++) {
@@ -79,9 +82,12 @@ void init_ahci() {
             if (vendor != 0xFFFF) {
                 short id = read_pci_word(i, j, 0, 2);
                 short class_word = read_pci_word(i, j, 0x00, 0x09);
-                char class = class_word & 0b000000000000111;
+                char class = class_word & (0b111);
+                char subclass = class_word & (0b111 << 16);
                 print_str(intts(class));
                 print_char(' ');
+                //print_str(intts(subclass));
+                //print_char(',');
                 if (class == 0x01) {
                     print_str("AHCI DETECTED");
                     ahci_bus = i;
@@ -180,20 +186,55 @@ void init_ahci() {
             print_char('0');
         }
     }
-}
 
-int clb[1024];
-int fb[256];
-int 
-
-short* read_ahci() {
-    /*char* port = get_port_addr(0);
+    char* port = get_port_addr(implemented_ports[0]);
     port[0x18] &= ~(0b1);
     port[0x18] &= ~(0b1 << 8);
     while ((port[0x18] & (0b1 << 14)) || (port[0x18] & (0b1 << 15))) {} // wait for clear
     port[0x00] = &clb; // Allocate command list buffer
     port[0x08] = &fb; // Allocate FIS buffer*/
+}
 
-    
+short* read_ahci() {
+    if (ahci_bus == -1 || ahci_device == -1) return;
+    int* port = get_port_addr(implemented_ports[0]);
 
+    // Needed data
+    clb[0x0] = 0;
+    clb[0x0] |= 0b10;
+    clb[0x0] |= 0b1 << 16;
+
+    // DW 0 
+    fb[0x80] = 0;
+    fb[0x80] = 0b10;
+
+    // DW 1
+    // 32 BIT SYSTEM. IFNORED
+    fb[0x81] = 0;
+    //fb[0x81] = 0b10;
+
+    // DW 2
+    // RESERVED
+
+    // DW 3
+    fb[0x83] = 0;
+    fb[0x83] |= 1 << 31; // Interruption
+    fb[0x83] |= 512; // Data size
+
+    port[0x018] |= 0b1; // START!
+    port[0x38] = 0b1 << implemented_ports[0]; //  Issue command
+
+    int cycles = 0;
+
+    while (port[0x20] & (0b1 << 7) && cycles < 10000) {
+
+    }
+    if (cycles >= 10000) {
+        print_str("Not readed");
+    }
+
+    for (int i = 0; i < 512; i++) {
+        print_str(intts(fb[0x80 + i])); // I don't think it's right way
+        print_char(' ');
+    }
 }
