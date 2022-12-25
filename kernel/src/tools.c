@@ -53,10 +53,11 @@ char* hexts(char hex) {
 char* reverse_size(char* str, int size) {
     int index = 0;
     char* reversed = allocate(size);
-    for (int i = size; i > 0; i--) {
+    for (int i = size-1; i >= 0; i--) {
         reversed[index] = str[i];
         index++;
     }
+    reversed[size] = 0;
     return reversed;
 }
 

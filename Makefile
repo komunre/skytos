@@ -12,7 +12,7 @@ FLAGS = -g -fno-pie -nostdlib -fno-builtin -nostartfiles -nodefaultlibs -ffreest
 all: run
 
 $(boot_obj): $(boot_src)
-	nasm -felf32 $< -o $@
+	nasm -felf32 $< -o $@ 
 
 
 %.o: %.c $(kernel_src)

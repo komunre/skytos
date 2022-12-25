@@ -10,8 +10,17 @@ char* command = "";
 int command_counter = 0;
 char sector = 0;
 
+char last_character = 0;
+
 void process_key() {
     char ch = get_resp(0x60);
+    if (ch == last_character) {
+        sleep(10000000);
+    }
+    ch = get_resp(0x60);
+    if (ch == 0) {
+        return;
+    }
     if (ch < 0x81) {
         if (ch == 0x01) {
             print_char('w');
@@ -21,7 +30,7 @@ void process_key() {
             sleep(100000);
         }
 
-        if (ch == 0x1C) {
+        /*if (ch == 0x1C) {
             clear_screen();
             screenX = 0;
             screenY = 0;
@@ -32,7 +41,7 @@ void process_key() {
             if (sector == 255) {
                 sector = 0;
             }
-        }
+        }*/
 
         if (ch > 0x02 && ch < 0x0B) {
             command += (ch - 0x01) + '0';
@@ -63,4 +72,5 @@ void process_key() {
             asm ("nop");
         }
     }
+    last_character = ch;
 }

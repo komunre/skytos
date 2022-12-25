@@ -1,0 +1,7 @@
+MUST INSTALL i386-elf-gcc FROM OSDEV WIKI
+
+MUST ISNTALL binutils:i386
+
+# grub-mkrescue dependencies
+MUST INSTALL xorriso
+MUST INSTALL mtools
