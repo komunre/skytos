@@ -1,0 +1,5 @@
+include/x86.h(20): Warning! W138: No newline at end of file
+kernel/stdio.c(40): Warning! W120: lvalue cast is not standard C
+kernel/stdio.c(40): Warning! W120: lvalue cast is not standard C
+kernel/stdio.c(19): Warning! W303: Parameter 'length' has been defined, but not referenced
+kernel/stdio.c(114): Warning! W138: No newline at end of file

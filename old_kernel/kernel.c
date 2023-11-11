@@ -1,16 +1,11 @@
-#include "src/screen.h"
-#include "src/string.h"
-#include "src/ps2.h"
+#include "screen.h"
+#include "string.h"
 
 char chars[255] = "-=0\tqwertyuiop[]00asdfghjkl;'`0\\zxcvbnm,./0*";
 
 void kmain(void) {
     print_str(format_str("Skytos loaded\n"));
     
-    /*for (int i = 0; i < 255; i++) {
-        print_char((char)i);
-    }*/
-    print_char(get_resp(0x60));
     while (1) {
         char ch = get_resp(0x60);
         if (ch < 0x81) {

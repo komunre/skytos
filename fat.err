@@ -1,0 +1,19 @@
+include/x86.h(20): Warning! W138: No newline at end of file
+include/disk.h(14): Warning! W138: No newline at end of file
+include/fat.h(40): Warning! W138: No newline at end of file
+include/memdef.h(7): Warning! W138: No newline at end of file
+include/string.h(8): Warning! W138: No newline at end of file
+include/string.h(8): Warning! W129: #endif matches #if in different source file 'include/string.h'
+kernel/fat.c(45): Warning! W102: Type mismatch (warning)
+kernel/fat.c(45): Note! I2003: source conversion type is 'void *'
+kernel/fat.c(45): Note! I2004: target conversion type is 'unsigned long'
+kernel/fat.c(77): Warning! W112: Pointer truncated
+kernel/fat.c(77): Note! I2003: source conversion type is 'unsigned char __far *'
+kernel/fat.c(77): Note! I2004: target conversion type is 'unsigned char *'
+kernel/fat.c(90): Warning! W112: Pointer truncated
+kernel/fat.c(90): Note! I2003: source conversion type is 'FAT_DirectoryEntry __far *'
+kernel/fat.c(90): Note! I2004: target conversion type is 'FAT_DirectoryEntry *'
+kernel/fat.c(118): Warning! W112: Pointer truncated
+kernel/fat.c(118): Note! I2003: source conversion type is 'struct {...} __far *'
+kernel/fat.c(118): Note! I2004: target conversion type is 'FAT_File *'
+kernel/fat.c(153): Warning! W138: No newline at end of file

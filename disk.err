@@ -1,0 +1,13 @@
+include/x86.h(20): Warning! W138: No newline at end of file
+include/disk.h(14): Warning! W138: No newline at end of file
+kernel/disk.c(9): Warning! W102: Parameter 4: Type mismatch (warning)
+kernel/disk.c(9): Note! I2003: source conversion type is 'unsigned short *'
+kernel/disk.c(9): Note! I2004: target conversion type is 'unsigned short'
+kernel/disk.c(9): Warning! W102: Parameter 5: Type mismatch (warning)
+kernel/disk.c(9): Note! I2003: source conversion type is 'unsigned short *'
+kernel/disk.c(9): Note! I2004: target conversion type is 'unsigned short'
+kernel/disk.c(9): Note! I2002: 'x86_Disk_GetDriveParams' defined in: include/x86.h(16)
+kernel/disk.c(31): Warning! W102: Parameter 1: Type mismatch (warning)
+kernel/disk.c(31): Note! I2003: source conversion type is 'DISK *'
+kernel/disk.c(31): Note! I2004: target conversion type is 'unsigned char'
+kernel/disk.c(36): Warning! W138: No newline at end of file

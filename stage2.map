@@ -1,0 +1,131 @@
+Open Watcom Linker Version 2.0 beta Oct 20 2023 01:52:49 (64-bit)
+Copyright (c) 2002-2023 The Open Watcom Contributors. All Rights Reserved.
+Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
+Created on:       23/11/08 07:32:10
+Executable Image: stage2.bin
+creating a RAW Binary Image executable
+
+
+                        +------------+
+                        |   Groups   |
+                        +------------+
+
+Group                           Address              Size
+=====                           =======              ====
+
+DGROUP                          00000c4a             00000122
+
+
+
+                        +--------------+
+                        |   Segments   |
+                        +--------------+
+
+Segment                Class          Group          Address         Size
+=======                =====          =====          =======         ====
+
+_ENTRY                 CODE           AUTO           00000000        00000013
+_TEXT                  CODE           AUTO           00000013        00000c36
+CONST                  DATA           DGROUP         00000c4a        000000fa
+CONST2                 DATA           DGROUP         00000d44        00000010
+_DATA                  DATA           DGROUP         00000d54        0000000c
+_BSS                   BSS            DGROUP         00000d60        0000000c
+
+
+                        +----------------+
+                        |   Memory Map   |
+                        +----------------+
+
+* = unreferenced symbol
++ = symbol only referenced locally
+
+Address        Symbol
+=======        ======
+
+Module: stage2_asm.bin(stage2/boot_stage2.asm)
+00000000       entry
+Module: x86.bin(kernel/asm/x86.asm)
+00000013       __U4D
+0000003a       _x86_Video_WriteCharTeletype
+0000004d       _x86_div64_32
+0000007b       _x86_Disk_Reset
+00000090       _x86_Disk_Read
+000000c7       _x86_Disk_GetDriveParams
+Module: stage2_c.obj(/home/komunre/SkytOS/stage2/boot_stage2.c)
+00000108       _cstart_
+Module: stdio.obj(/home/komunre/SkytOS/kernel/stdio.c)
+000001a6+      putc_
+000001cd+      puts_
+00000204+      printf_number_
+000002f4       _printf
+00000d44+      _g_HexChars
+Module: disk.obj(/home/komunre/SkytOS/kernel/disk.c)
+000004ce       _DISK_Initialize
+00000538+      DISK_LBA2CHS_
+000005eb       _DISK_ReadSectors
+Module: fat.obj(/home/komunre/SkytOS/kernel/fat.c)
+00000d60+      _g_OpenFATFiles
+00000678+      FAT_ReadBootSector_
+000006ac+      FAT_ReadFat_
+000006f7+      FAT_ReadRootDirectory_
+000007ce       FAT_Initialize_
+00000920+      FAT_FindFile_
+000009bd       FAT_Open_
+00000a49+      FAT_Close_
+00000a82       FAT_ReadFile_
+00000d5c+      _g_FreeFATHandles
+Module: string.obj(/home/komunre/SkytOS/kernel/string.c)
+00000b95       memcmp_
+
+
+                        +---------------------+
+                        |   Module Segments   |
+                        +---------------------+
+
+! = 32-bit segment
+c = initialized communal data
+
+Module          Segment               Class           Address         Size
+======          =======               =====           =======         ====
+
+stage2/boot_stage2.asm
+                _ENTRY                CODE           00000000         00000013
+kernel/asm/x86.asm
+                _TEXT                 CODE           00000013         000000f5
+/home/komunre/SkytOS/stage2/boot_stage2.c
+                _TEXT                 CODE           00000108         0000009e
+                CONST                 DATA           00000c4a         0000004c
+                CONST2                DATA           00000d44         00000000
+                _DATA                 DATA           00000d54         00000000
+/home/komunre/SkytOS/kernel/stdio.c
+                _TEXT                 CODE           000001a6         00000328
+                CONST                 DATA           00000c96         00000000
+                CONST2                DATA           00000d44         00000010
+                _DATA                 DATA           00000d54         00000000
+/home/komunre/SkytOS/kernel/disk.c
+                _TEXT                 CODE           000004ce         000001aa
+                CONST                 DATA           00000c96         00000000
+                CONST2                DATA           00000d54         00000000
+                _DATA                 DATA           00000d54         00000000
+/home/komunre/SkytOS/kernel/fat.c
+                _TEXT                 CODE           00000678         0000051d
+                CONST                 DATA           00000c96         000000ae
+                CONST2                DATA           00000d54         00000000
+                _DATA                 DATA           00000d54         0000000c
+                _BSS                  BSS            00000d60         0000000c
+/home/komunre/SkytOS/kernel/string.c
+                _TEXT                 CODE           00000b95         000000b4
+                CONST                 DATA           00000d44         00000000
+                CONST2                DATA           00000d54         00000000
+                _DATA                 DATA           00000d60         00000000
+Warning! W1014: stack segment not found
+
+
+                        +-----------------------+
+                        |   Linker Statistics   |
+                        +-----------------------+
+
+Stack size:  0200 (512.)
+Memory size:  0d6c (3436.)
+Entry point address: 00000000
+Link time: 00:00.59

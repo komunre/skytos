@@ -1,5 +1,5 @@
 #include "ps2.h"
-#include "port/port.h"
+#include "port.h"
 
 short ps2_data = 0x60;
 short ps2_cmd = 0x64;
