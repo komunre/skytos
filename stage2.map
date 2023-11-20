@@ -1,7 +1,7 @@
 Open Watcom Linker Version 2.0 beta Oct 20 2023 01:52:49 (64-bit)
 Copyright (c) 2002-2023 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       23/11/08 07:32:10
+Created on:       23/11/20 21:37:15
 Executable Image: stage2.bin
 creating a RAW Binary Image executable
 
@@ -13,7 +13,7 @@ creating a RAW Binary Image executable
 Group                           Address              Size
 =====                           =======              ====
 
-DGROUP                          00000c4a             00000122
+DGROUP                          000011f4             0000027c
 
 
 
@@ -25,11 +25,11 @@ Segment                Class          Group          Address         Size
 =======                =====          =====          =======         ====
 
 _ENTRY                 CODE           AUTO           00000000        00000013
-_TEXT                  CODE           AUTO           00000013        00000c36
-CONST                  DATA           DGROUP         00000c4a        000000fa
-CONST2                 DATA           DGROUP         00000d44        00000010
-_DATA                  DATA           DGROUP         00000d54        0000000c
-_BSS                   BSS            DGROUP         00000d60        0000000c
+_TEXT                  CODE           AUTO           00000013        000011e1
+CONST                  DATA           DGROUP         000011f4        00000227
+CONST2                 DATA           DGROUP         0000141c        00000010
+_DATA                  DATA           DGROUP         0000142c        00000008
+_BSS                   BSS            DGROUP         00001434        0000003c
 
 
                         +----------------+
@@ -46,36 +46,41 @@ Module: stage2_asm.bin(stage2/boot_stage2.asm)
 00000000       entry
 Module: x86.bin(kernel/asm/x86.asm)
 00000013       __U4D
-0000003a       _x86_Video_WriteCharTeletype
-0000004d       _x86_div64_32
-0000007b       _x86_Disk_Reset
-00000090       _x86_Disk_Read
-000000c7       _x86_Disk_GetDriveParams
+0000003a       __U4M
+00000054       _x86_Video_WriteCharTeletype
+00000067       _x86_div64_32
+00000095       _x86_Disk_Reset
+000000aa       _x86_Disk_Read
+000000e1       _x86_Disk_GetDriveParams
 Module: stage2_c.obj(/home/komunre/SkytOS/stage2/boot_stage2.c)
-00000108       _cstart_
+00000125       _cstart_
 Module: stdio.obj(/home/komunre/SkytOS/kernel/stdio.c)
-000001a6+      putc_
-000001cd+      puts_
-00000204+      printf_number_
-000002f4       _printf
-00000d44+      _g_HexChars
+0000021b+      putc_
+00000242+      puts_
+00000283+      printf_number_
+0000051f       _printf
+0000141c+      _g_HexChars
 Module: disk.obj(/home/komunre/SkytOS/kernel/disk.c)
-000004ce       _DISK_Initialize
-00000538+      DISK_LBA2CHS_
-000005eb       _DISK_ReadSectors
+00000781       _DISK_Initialize
+0000080f+      DISK_LBA2CHS_
+000008c2       _DISK_ReadSectors
 Module: fat.obj(/home/komunre/SkytOS/kernel/fat.c)
-00000d60+      _g_OpenFATFiles
-00000678+      FAT_ReadBootSector_
-000006ac+      FAT_ReadFat_
-000006f7+      FAT_ReadRootDirectory_
-000007ce       FAT_Initialize_
-00000920+      FAT_FindFile_
-000009bd       FAT_Open_
-00000a49+      FAT_Close_
-00000a82       FAT_ReadFile_
-00000d5c+      _g_FreeFATHandles
+00001434+      _g_FreeFATHandles
+0000143c+      _g_OpenFATFiles
+00000966+      FAT_ClusterToLba_
+000009ac+      FAT_ReadBootSector_
+000009e0+      FAT_ReadFat_
+00000a28+      FAT_ReadRootDirectory_
+00000b16       FAT_Initialize_
+00000ca7+      FAT_FindFile_
+00000d18       FAT_Open_
+00000eea+      FAT_Close_
+00000f2b       FAT_ReadFile_
 Module: string.obj(/home/komunre/SkytOS/kernel/string.c)
-00000b95       memcmp_
+00001078       memcmp_
+00001110       memcpy_
+Module: math.obj(/home/komunre/SkytOS/kernel/math.c)
+0000118b       min_
 
 
                         +---------------------+
@@ -91,33 +96,38 @@ Module          Segment               Class           Address         Size
 stage2/boot_stage2.asm
                 _ENTRY                CODE           00000000         00000013
 kernel/asm/x86.asm
-                _TEXT                 CODE           00000013         000000f5
+                _TEXT                 CODE           00000013         00000112
 /home/komunre/SkytOS/stage2/boot_stage2.c
-                _TEXT                 CODE           00000108         0000009e
-                CONST                 DATA           00000c4a         0000004c
-                CONST2                DATA           00000d44         00000000
-                _DATA                 DATA           00000d54         00000000
+                _TEXT                 CODE           00000125         000000f6
+                CONST                 DATA           000011f4         00000081
+                CONST2                DATA           0000141c         00000000
+                _DATA                 DATA           0000142c         00000000
 /home/komunre/SkytOS/kernel/stdio.c
-                _TEXT                 CODE           000001a6         00000328
-                CONST                 DATA           00000c96         00000000
-                CONST2                DATA           00000d44         00000010
-                _DATA                 DATA           00000d54         00000000
+                _TEXT                 CODE           0000021b         00000566
+                CONST                 DATA           00001276         00000000
+                CONST2                DATA           0000141c         00000010
+                _DATA                 DATA           0000142c         00000000
 /home/komunre/SkytOS/kernel/disk.c
-                _TEXT                 CODE           000004ce         000001aa
-                CONST                 DATA           00000c96         00000000
-                CONST2                DATA           00000d54         00000000
-                _DATA                 DATA           00000d54         00000000
+                _TEXT                 CODE           00000781         000001e5
+                CONST                 DATA           00001276         0000004e
+                CONST2                DATA           0000142c         00000000
+                _DATA                 DATA           0000142c         00000000
 /home/komunre/SkytOS/kernel/fat.c
-                _TEXT                 CODE           00000678         0000051d
-                CONST                 DATA           00000c96         000000ae
-                CONST2                DATA           00000d54         00000000
-                _DATA                 DATA           00000d54         0000000c
-                _BSS                  BSS            00000d60         0000000c
+                _TEXT                 CODE           00000966         00000712
+                CONST                 DATA           000012c4         00000157
+                CONST2                DATA           0000142c         00000000
+                _DATA                 DATA           0000142c         00000008
+                _BSS                  BSS            00001434         0000003c
 /home/komunre/SkytOS/kernel/string.c
-                _TEXT                 CODE           00000b95         000000b4
-                CONST                 DATA           00000d44         00000000
-                CONST2                DATA           00000d54         00000000
-                _DATA                 DATA           00000d60         00000000
+                _TEXT                 CODE           00001078         00000113
+                CONST                 DATA           0000141c         00000000
+                CONST2                DATA           0000142c         00000000
+                _DATA                 DATA           00001434         00000000
+/home/komunre/SkytOS/kernel/math.c
+                _TEXT                 CODE           0000118b         00000069
+                CONST                 DATA           0000141c         00000000
+                CONST2                DATA           0000142c         00000000
+                _DATA                 DATA           00001434         00000000
 Warning! W1014: stack segment not found
 
 
@@ -126,6 +136,6 @@ Warning! W1014: stack segment not found
                         +-----------------------+
 
 Stack size:  0200 (512.)
-Memory size:  0d6c (3436.)
+Memory size:  1470 (5232.)
 Entry point address: 00000000
-Link time: 00:00.59
+Link time: 00:00.52

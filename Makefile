@@ -6,7 +6,7 @@ LD16=wlink
 
 CFLAGS16=-4 -d3 -s -wx -ms -zl -zq -za99 -Iinclude/
 
-kernel_src:=kernel/stdio.c kernel/disk.c kernel/fat.c kernel/string.c
+kernel_src:=kernel/stdio.c kernel/disk.c kernel/fat.c kernel/string.c kernel/math.c
 kernel_obj:=$(patsubst kernel/%.c, %.obj, $(kernel_src))
 kernel_asm_src:=kernel/asm/x86.asm
 kernel_asm_bin:=$(patsubst kernel/asm/%.asm, %.bin, $(kernel_asm_src))
@@ -42,6 +42,7 @@ FUCK_YOU:
 	$(CC16) $(CFLAGS16) -fo=disk.obj kernel/disk.c
 	$(CC16) $(CFLAGS16) -fo=fat.obj kernel/fat.c
 	$(CC16) $(CFLAGS16) -fo=string.obj kernel/string.c
+	$(CC16) $(CFLAGS16) -fo=math.obj kernel/math.c
 
 
 
@@ -91,6 +92,9 @@ floppy_image: link main_floppy.img
 
 floprun: floppy_image
 	qemu-system-i386 -m 2048 -fda main_floppy.img
+
+floprun_debug: floppy_image
+	qemu-system-i386 -s -S -m 2048 -fda main_floppy.img
 
 run: iso
 	qemu-system-i386 -m 2048 skytos.iso

@@ -22,6 +22,22 @@ __U4D:
 
     ret
 
+global __U4M
+__U4M:
+    shl edx, 16
+    mov dx, ax
+    mov eax, edx
+    
+    shl ecx, 16
+    mov cx, bx
+
+    mul ecx
+    mov edx, eax
+    shr edx, 16
+
+    ret
+
+
 global _x86_Video_WriteCharTeletype
 _x86_Video_WriteCharTeletype:
     ; new call frame
@@ -37,6 +53,7 @@ _x86_Video_WriteCharTeletype:
     mov ah, 0Eh
     mov al, [bp+4]
     mov bh, [bp+6]
+    
     int 10h
 
     pop bx
@@ -106,23 +123,23 @@ _x86_Disk_Read:
     push bx
     push es
 
-    mov dl, [bp + 4]
+    mov dl, [bp + 4] ; dl drive
     
-    mov ch, [bp + 6]
-    mov cl, [bp + 7]
+    mov ch, [bp + 6] ; ch cylinder (lower 8 bits)
+    mov cl, [bp + 7] ; cl cylinder to bits 6-7
     shl cl, 6
 
-    mov dh, [bp + 8]
+    mov dh, [bp + 8] ; dh head
 
-    mov al, [bp + 10]
+    mov al, [bp + 10] ; al sector to bits 0-5
     and al, 3Fh
     or cl, al
     
-    mov al, [bp + 12]
+    mov al, [bp + 12] ; al count
     
-    mov bx, [bp + 16]
+    mov bx, [bp + 16] ; es:bx far pointer
     mov es, bx
-    mov bx, [bp + 14]
+    mov bx, [bp + 14] ; :bx part
 
     mov ah, 02h
     stc
@@ -165,20 +182,23 @@ _x86_Disk_GetDriveParams:
     sbb ax, 0
 
     mov si, [bp + 6]
-    mov [si], bl
+    mov [si], bl ; drive type out
 
-    mov bl, ch
-    mov bh, cl
+    mov bl, ch ; max cylinder number
+    mov bh, cl ; maximum sector number
+    shr bh, 7
     
     mov si, [bp + 8]
-    mov [si],bx
-    xor ch, ch
+    mov [si],bx ; cylinders
+
+    xor ch, ch ; sectors
     and cl, 3Fh
     mov si, [bp + 10]
-    mov [si], cx
-    mov cl, dh
+    mov [si], cx ; sectors out
+
+    mov cl, dh ; heads
     mov si, [bp + 12]
-    mov [si], cx
+    mov [si], cx ; heads out
 
     pop di
     pop si

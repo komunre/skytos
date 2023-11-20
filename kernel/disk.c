@@ -1,17 +1,20 @@
 #include "disk.h"
 #include "x86.h"
+#include "stdio.h"
 
 bool DISK_Initialize(DISK* disk, uint8_t driveNumber) {
     uint8_t driveType;
-    uint16_t cylinders, sectors,heads;
+    uint16_t cylinders, sectors, heads;
 
     disk->id = driveNumber;
     if (!x86_Disk_GetDriveParams(disk->id, &driveType, &cylinders, &sectors, &heads)) {
         return false;
     }
-    disk->cylinders = cylinders;
-    disk->heads = heads;
+    disk->cylinders = cylinders + 1;
+    disk->heads = heads + 1;
     disk->sectors = sectors;
+
+    printf("Disk params: driveType %hhu, cylinders %hu, heads %hu, sectors %hu\r\n", driveType, disk->cylinders, disk->heads, disk->sectors);
 
     return true;
 }
@@ -26,9 +29,13 @@ bool DISK_ReadSectors(DISK* disk, uint32_t lba, uint8_t count, void far* dataOut
     uint16_t cylinder, sector, head;
 
     DISK_LBA2CHS(disk, lba, &cylinder, &sector, &head);
+    if (cylinder > 80) {
+        printf("stupid\r\n");
+    }
+    //printf("Reading from %hu sector, %hu cylinder, %hu head\r\n", sector, cylinder, head);
 
     for (int i = 0; i < 5; i++) {
-        if (x86_Disk_Read(disk, cylinder, head, sector, count, dataOut)) return true;
+        if (x86_Disk_Read(disk->id, cylinder, head, sector, count, dataOut)) return true;
         x86_Disk_Reset(disk->id);
     }
 

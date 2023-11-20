@@ -1,7 +1,4 @@
 include/x86.h(20): Warning! W138: No newline at end of file
 include/disk.h(14): Warning! W138: No newline at end of file
-include/fat.h(40): Warning! W138: No newline at end of file
-stage2/boot_stage2.c(21): Warning! W112: Parameter 2: Pointer truncated
-stage2/boot_stage2.c(21): Note! I2003: source conversion type is 'FAT_File __far *'
-stage2/boot_stage2.c(21): Note! I2004: target conversion type is 'FAT_File *'
-stage2/boot_stage2.c(21): Warning! W115: &array may not produce intended result
+include/fat.h(43): Warning! W138: No newline at end of file
+stage2/boot_stage2.c(24): Warning! W115: &array may not produce intended result
